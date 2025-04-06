@@ -4,7 +4,7 @@ def health_check():
     try:
         # Host and port for the service (example values)
         host = 'localhost'
-        port = 80
+        port = 8080
 
         # Create a TCP socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
