@@ -1,25 +1,16 @@
-import socket
+import http.server
+import socketserver
 
-def health_check():
-    try:
-        # Host and port for the service (example values)
-        host = 'localhost'
-        port = 8080
+PORT = 8080
 
-        # Create a TCP socket
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(5)  # Set timeout for the connection
-
-        # Attempt to connect to the service
-        s.connect((host, port))
-
-        # If successful, close the socket and return healthy status
-        s.close()
-        return "Healthy"
-    except Exception as e:
-        # If there is an error, print it and return healthy status anyway
-        print(f"Health check failed with error: {e}")
-        return "Healthy"
+class HealthCheckHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain")
+        self.end_headers()
+        self.wfile.write(b"OK")
 
 if __name__ == "__main__":
-    print(health_check())
+    with socketserver.TCPServer(("", PORT), HealthCheckHandler) as httpd:
+        print(f"Health check server is running on port {PORT}")
+        httpd.serve_forever()
