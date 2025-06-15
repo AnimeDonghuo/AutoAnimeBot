@@ -16,6 +16,11 @@
 # if you are using this following code then don't forgot to give proper
 # credit to t.me/kAiF_00z (github.com/kaif-00z)
 
+# === 👇 HEALTH SERVER IMPORT START ===
+from health_server import start_health_server
+start_health_server()
+# === 👆 HEALTH SERVER IMPORT END ===
+
 from traceback import format_exc
 
 from telethon import Button, events
