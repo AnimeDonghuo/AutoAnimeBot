@@ -1,16 +1,17 @@
-import http.server
-import socketserver
+# health_server.py
+from flask import Flask
+import threading
 
-PORT = 8080
+app = Flask(__name__)
 
-class HealthCheckHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-Type", "text/plain")
-        self.end_headers()
-        self.wfile.write(b"OK")
+@app.route('/')
+def health():
+    return "I'm healthy!", 200
 
-if __name__ == "__main__":
-    with socketserver.TCPServer(("", PORT), HealthCheckHandler) as httpd:
-        print(f"Health check server is running on port {PORT}")
-        httpd.serve_forever()
+def run():
+    app.run(host="0.0.0.0", port=8080)
+
+def start_health_server():
+    thread = threading.Thread(target=run)
+    thread.daemon = True
+    thread.start()
